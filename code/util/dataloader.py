@@ -25,6 +25,7 @@ import os
 import pdb
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
+import random
 
 sys.path.append('/Users/liujiyao/Desktop/MSCMR/1 MSCMR orient/code/')
 from d2l import torch as d2l
@@ -47,10 +48,13 @@ class LoadDataset(Dataset):
         self.mode = mode
         self.truncation = truncation
 
-        print(f"load data in : {self.root}")
+        print(f"load data in : {self.root} as {self.mode}")
 
         "1.加载获取图像-mask路径列表"
-        self.folders = glob.glob(self.root+'/*/*') #多个文件路径
+        # self.folders = glob.glob(self.root+'/*/*') #多个文件路径
+        # self.folders = sorted(self.folders)
+        # self.folders = random.shuffle(self.folders, )
+        self.folders = os.listdir(self.root+'/0')  # 只获取0类别路径
         self.folders = sorted(self.folders)
 
         assert self.folders!=[] #是否成功读入
@@ -59,17 +63,30 @@ class LoadDataset(Dataset):
 
         "2.数据规整与增广"
 
-        spl = [.8,.1,.1] #训练集验证集测试集划分比例
+        spl = [.8,.2,.0] #训练集验证集测试集划分比例
 
         train_ptr = int(spl[0]*len(self.folders))
         val_ptr = train_ptr + int(spl[1]*len(self.folders))
+        self.data=[]
         if self.mode == 'train':
-            self.data = self.folders[:train_ptr]
+            data0 = self.folders[:train_ptr]
+            self.data += [os.path.join(self.root,str(0),x.split('/')[-1]) for x in data0]
+            for i in range(1,8):
+                datai = [os.path.join(self.root,str(i),x.split('/')[-1]) for x in data0]
+                self.data += datai
         elif self.mode == 'valid':
-            self.data = self.folders[train_ptr:val_ptr]
+            data0 = self.folders[train_ptr:val_ptr]
+            self.data += [os.path.join(self.root,str(0),x.split('/')[-1]) for x in data0]
+            for i in range(1,8):
+                datai = [os.path.join(self.root,str(i),x.split('/')[-1]) for x in data0]
+                self.data += datai
         else:
-            self.data = self.folders[val_ptr:]
-
+            data0 = self.folders[val_ptr:]
+            self.data += data0
+            [os.path.join(self.root, str(0), x.split('/')[-1]) for x in data0]
+            for i in range(1,8):
+                datai = [os.path.join(self.root,str(i),x.split('/')[-1]) for x in data0]
+                self.data += datai
 
         #定义数据增广
         self.data_transforms = {
@@ -130,7 +147,7 @@ class LoadDataset(Dataset):
             img = torch.tensor(img).float()
 
         label = int(img_fname.split('/')[-2])
-        label = torch.tensor(label).float()
+        label = torch.tensor(label).long()
         inp= self.data_transforms[self.mode](img)
         return inp, label
 
