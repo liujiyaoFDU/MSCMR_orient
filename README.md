@@ -25,5 +25,16 @@ we pre-train the model on the bSSFP cine dataset, and then transfer the model to
 
 ![image-20221121191545900](https://ossjiyaoliu.oss-cn-beijing.aliyuncs.com/uPic/image-20221121191545900.png)
 
+## dataset
+
+MSCMR orient：链接: https://pan.baidu.com/s/1cE5i68YUNhXrzUpldTV6ow 提取码: mj6p
 
 
+
+## 参考
+
+[1] Xiahai Zhuang: Multivariate mixture model for myocardial segmentation combining multi-source images. IEEE Transactions on Pattern Analysis and Machine Intelligence 41(12), 2933–2946, 2019 
+
+[2] Xiahai Zhuang: Multivariate mixture model for cardiac segmentation from multi-sequence MRI. MICCAI 2016, 581–588, Springer, 2016
+
+[3] Ke Zhang and Xiahai Zhuang: Recognition and Standardization of Cardiac MRI Orientation via Multi-tasking Learning and Deep Neural Networks. MyoPS 2020, LNCS 12554, 167–176, Springer Nature, 2020, https://github.com/BWGZK/Orientation-Adjust-Tool
