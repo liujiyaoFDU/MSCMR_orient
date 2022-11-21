@@ -2,11 +2,11 @@
 /code/data_transform
 /code/checkpoints
 *.pdf
-/code/orient_adjust.py
-/code/train_resnet18.py
-/code/util/gradcam.py
-/code/util/temp.ipynb
-/code/util/dataloader_old.py
+code/orient_adjust.py
+code/train_resnet18.py
+code/util/gradcam.py
+code/util/temp.ipynb
+code/util/dataloader_old.py
 /model
 *.txt
 *.xlsx
@@ -17,4 +17,4 @@
 .DS_Store
 __init__.py
 read_me.txt
-/code/.DS_Store
+code/.DS_Store
