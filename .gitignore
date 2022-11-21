@@ -10,6 +10,11 @@
 /model
 *.txt
 *.xlsx
-实验记录.mo
+实验记录.md
 *.pptx
 /img
+/.idea
+.DS_Store
+__init__.py
+read_me.txt
+/code/.DS_Store
