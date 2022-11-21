@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 import sys
-sys.path.append('/Users/liujiyao/Desktop/MSCMR/1 MSCMR orient/code/')
+sys.path.append('../')
 from d2l import torch as d2l
 
 # 卷积块
@@ -70,3 +70,6 @@ def DenseNet():
 
 # blk = transition_block(23, 10)
 # blk(Y).shape
+
+net = DenseNet()
+print('yes')

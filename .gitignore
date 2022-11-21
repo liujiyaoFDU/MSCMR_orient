@@ -2,3 +2,14 @@
 /code/data_transform
 /code/checkpoints
 *.pdf
+/code/orient_adjust.py
+/code/train_resnet18.py
+/code/util/gradcam.py
+/code/util/temp.ipynb
+/code/util/dataloader_old.py
+/model
+*.txt
+*.xlsx
+实验记录.mo
+*.pptx
+/img

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="zhengyx@180.167.250.222:8001">
+    <serverData>
+      <paths name="zhengyx@180.167.250.222:8001">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home3/HWGroup/zhengyx/JY_file/1 MSCMR orient" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

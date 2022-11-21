@@ -54,40 +54,27 @@ class LoadDataset(Dataset):
         # self.folders = glob.glob(self.root+'/*/*') #多个文件路径
         # self.folders = sorted(self.folders)
         # self.folders = random.shuffle(self.folders, )
-        self.folders = os.listdir(self.root+'/0')  # 只获取0类别路径
-        self.folders = sorted(self.folders)
+        # self.folders = os.listdir(self.root+'/0')  # 只获取0类别路径
+        # self.folders = sorted(self.folders)
 
-        assert self.folders!=[] #是否成功读入
+
+        # assert self.folders!=[] #是否成功读入
 
         "======================================="
 
         "2.数据规整与增广"
 
-        spl = [.8,.2,.0] #训练集验证集测试集划分比例
-
-        train_ptr = int(spl[0]*len(self.folders))
-        val_ptr = train_ptr + int(spl[1]*len(self.folders))
         self.data=[]
         if self.mode == 'train':
-            data0 = self.folders[:train_ptr]
-            self.data += [os.path.join(self.root,str(0),x.split('/')[-1]) for x in data0]
-            for i in range(1,8):
-                datai = [os.path.join(self.root,str(i),x.split('/')[-1]) for x in data0]
-                self.data += datai
+            for i in range(1,36):
+                self.data+=glob.glob(self.root+f'/*/patient{i}*')
         elif self.mode == 'valid':
-            data0 = self.folders[train_ptr:val_ptr]
-            self.data += [os.path.join(self.root,str(0),x.split('/')[-1]) for x in data0]
-            for i in range(1,8):
-                datai = [os.path.join(self.root,str(i),x.split('/')[-1]) for x in data0]
-                self.data += datai
+            for i in range(36,46):
+                self.data+=glob.glob(self.root+f'/*/patient{i}*')
         else:
-            data0 = self.folders[val_ptr:]
-            self.data += data0
-            [os.path.join(self.root, str(0), x.split('/')[-1]) for x in data0]
-            for i in range(1,8):
-                datai = [os.path.join(self.root,str(i),x.split('/')[-1]) for x in data0]
-                self.data += datai
-
+            self.data += [self.root]  # 直接输入测试图片路径
+        print(self.data)
+        print(f'len of data = {len(self.data)}')
         #定义数据增广
         self.data_transforms = {
             'train': transforms.Compose([
@@ -101,7 +88,7 @@ class LoadDataset(Dataset):
             'valid': transforms.Compose([
                 transforms.ToPILImage(),
                 # transforms.Grayscale(num_output_channels=1),
-                # transforms.RandomResizedCrop((256, 256), scale=(0.7, 1), ratio=(0.8, 1.2)),
+                transforms.RandomResizedCrop((256, 256), scale=(0.7, 1), ratio=(0.8, 1.2)),
                 transforms.Resize((256, 256)),
                 transforms.ToTensor(),
                 transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5])
@@ -146,26 +133,29 @@ class LoadDataset(Dataset):
         else:
             img = torch.tensor(img).float()
 
-        label = int(img_fname.split('/')[-2])
-        label = torch.tensor(label).long()
-        inp= self.data_transforms[self.mode](img)
-        return inp, label
+        if self.mode != 'test':
+            label = int(img_fname.split('/')[-2])
+            label = torch.tensor(label).long()
+            inp= self.data_transforms[self.mode](img)
+            return inp, label
+        else:
+            inp = self.data_transforms[self.mode](img)
+            return inp
 
-
-if __name__=='__main__':
-
-
-    '''========参数设置========'''
-    num_workers=2
-    '''===================='''
-
-    
-    root = '/Users/liujiyao/Desktop/MSCMR/1 MSCMR orient/code/data_transform/C0'
-
-    dataset=LoadDataset(root=root, mode='valid', truncation = True)
-    load_dataset=DataLoader(dataset, batch_size=32, shuffle=True,
-                                num_workers=num_workers)
-    for i, (i1, i2) in enumerate(load_dataset):
-        print(i1.shape)
-        break
+# if __name__=='__main__':
+#
+#
+#     '''========参数设置========'''
+#     num_workers=2
+#     '''===================='''
+#
+#
+#     root = '/Users/liujiyao/Desktop/MSCMR/1 MSCMR orient/code/data_transform/C0'
+#
+#     dataset=LoadDataset(root=root, mode='valid', truncation = True)
+#     load_dataset=DataLoader(dataset, batch_size=32, shuffle=True,
+#                                 num_workers=num_workers)
+#     for i, (i1, i2) in enumerate(load_dataset):
+#         print(i1.shape)
+#         break
 
